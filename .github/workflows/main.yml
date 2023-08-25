@@ -1,5 +1,11 @@
 name: A workflow for my Hello World file
 on: push
+  on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag for custom workflow'
+        required: true
 jobs:
   build:
     name: Hello world action
