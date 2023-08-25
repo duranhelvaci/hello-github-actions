@@ -13,4 +13,4 @@ jobs:
                    
       - name: Logs for work summary
         run: |
-           echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
+           echo "### SRE logs for workflows! :rocket:" >> $GITHUB_STEP_SUMMARY
