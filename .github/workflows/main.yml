@@ -10,6 +10,7 @@ jobs:
       - uses: ./action-a
         with:
           MY_NAME: "Duran"
-
-  
-echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
+                   
+      - name: Logs for work summary
+         run:|
+           echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
