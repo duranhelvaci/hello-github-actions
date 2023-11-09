@@ -10,7 +10,8 @@ jobs:
       - uses: ./action-a
         with:
           MY_NAME: "Duran"
-                   
+      - name: Scan Docker image with Trivy
+        run: aws ecr start-image-scan --repository-name name --image-id imageTag=tag_name --region us-east-2             
       - name: Logs for work summary
         run: |
            echo "### SRE logs for workflows! :rocket:" >> $GITHUB_STEP_SUMMARY
