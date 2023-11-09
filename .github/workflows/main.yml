@@ -12,7 +12,7 @@ jobs:
         with:
           MY_NAME: "Duran"
       - name: Scan Docker image
-        run: aws ecr start-image-scan --hello-github-actions name --image-id imageTag=tag_name --region us-east-1            
+        run: aws ecr start-image-scan --repository-name hello-github-actions name --image-id imageTag=tag_name --region us-east-1            
       - name: Logs for work summary
         run: |
            echo "### SRE logs for workflows! :rocket:" >> $GITHUB_STEP_SUMMARY
