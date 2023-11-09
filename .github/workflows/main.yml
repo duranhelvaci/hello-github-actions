@@ -6,11 +6,22 @@ jobs:
     name: Hello world action
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      - name: Build Docker image
+        run: docker build -t your-image-name:latest .
+
+      - name: Log in to AWS ECR
+        run: |
+          aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-account-id.dkr.ecr.your-region.amazonaws.com
+
+      - name: Push Docker image to AWS ECR
+        run: |
+          docker tag your-image-name:latest your-account-id.dkr.ecr.your-region.amazonaws.com/your-repository-name:latest
+          docker push your-account-id.dkr.ecr.your-region.amazonaws.com/your-repository-name:latest
       - uses: ./action-a
         with:
           MY_NAME: "Duran"
-      - name: Scan Docker image with Trivy
+      - name: Scan Docker image
         run: aws ecr start-image-scan --repository-name name --image-id imageTag=tag_name --region us-east-2             
       - name: Logs for work summary
         run: |
