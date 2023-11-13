@@ -17,19 +17,18 @@ jobs:
         with:
           MY_NAME: "Duran"
       - name: Build Docker image
-        run: docker build -t your-image-name:latest .
+        run: docker build -t durandockerscantest .
 
       - name: Log in to AWS ECR
         run: |
           aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-account-id.dkr.ecr.your-region.amazonaws.com
 
       - name: Tag Docker image
-        run: docker tag your-image-name:latest your-account-id.dkr.ecr.your-region.amazonaws.com/your-repository-name:latest
-
+        run: docker tag durandockerscantest:latest 072838934733.dkr.ecr.us-east-1.amazonaws.com/durandockerscantest:latest
       - name: Push Docker image to AWS ECR
-        run: docker push your-account-id.dkr.ecr.your-region.amazonaws.com/your-repository-name:latest  
+        run: docker push 072838934733.dkr.ecr.us-east-1.amazonaws.com/durandockerscantest:latest  
       - name: Scan Docker image
-        run: aws ecr start-image-scan --repository-name hello-github-actions --image-id imageDigest=sha256:7b11bec0796b89c493eb7d7d7ceaf1b2ec832bf070362002ed1a38511919ca57 --region us-east-1            
+        run: aws ecr start-image-scan --repository-name durandockerscantest  --image-id imageTag=latest --region us-east-1            
       - name: Logs for work summary
         run: |
            echo "### SRE logs for workflows! :rocket:" >> $GITHUB_STEP_SUMMARY
