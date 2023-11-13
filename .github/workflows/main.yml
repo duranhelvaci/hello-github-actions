@@ -16,15 +16,18 @@ jobs:
       - uses: ./action-a
         with:
           MY_NAME: "Duran"
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build Docker image
+        run: docker build -t your-image-name:latest .
+
+      - name: Log in to AWS ECR
+        run: |
+          aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-account-id.dkr.ecr.your-region.amazonaws.com
 
       - name: Tag Docker image
         run: docker tag your-image-name:latest your-account-id.dkr.ecr.your-region.amazonaws.com/your-repository-name:latest
 
       - name: Push Docker image to AWS ECR
-        run: docker push your-account-id.dkr.ecr.your-region.amazonaws.com/your-repository-name:latest   
+        run: docker push your-account-id.dkr.ecr.your-region.amazonaws.com/your-repository-name:latest  
       - name: Scan Docker image
         run: aws ecr start-image-scan --repository-name hello-github-actions --image-id imageDigest=sha256:7b11bec0796b89c493eb7d7d7ceaf1b2ec832bf070362002ed1a38511919ca57 --region us-east-1            
       - name: Logs for work summary
