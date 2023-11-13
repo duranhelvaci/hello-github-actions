@@ -16,6 +16,22 @@ jobs:
       - uses: ./action-a
         with:
           MY_NAME: "Duran"
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push the image to Amazon ECR
+        id: build-image
+          env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
+        IMAGE_TAG: latest
+        run: |
+          # Build a docker container and push it to ECR 
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          echo "Pushing image to ECR..."
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"    
       - name: Scan Docker image
         run: aws ecr start-image-scan --repository-name hello-github-actions --image-id imageDigest=sha256:7b11bec0796b89c493eb7d7d7ceaf1b2ec832bf070362002ed1a38511919ca57 --region us-east-1            
       - name: Logs for work summary
